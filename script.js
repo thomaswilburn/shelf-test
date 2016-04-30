@@ -4,7 +4,8 @@ var $ = function(s) { return Array.prototype.slice.call(document.querySelectorAl
 var resultBox = document.querySelector(".result");
 var resultLabel = resultBox.querySelector(".description");
 var remainingLabel = resultBox.querySelector(".remaining");
-var inputs = $("input");
+var inputs = $("input, select");
+var bookSelect = document.querySelector("#book");
 
 var jsonp = function(url, callback) {
   console.log("requesting", url);
@@ -12,6 +13,7 @@ var jsonp = function(url, callback) {
   window[callbackName] = function(data) {
     delete window[callbackName];
     callback(data);
+    script.parentElement.removeChild(script);
   };
   var script = document.createElement("script");
   script.src = url + (url.indexOf("?") == -1 ? "?" : "&") + "callback=" + callbackName;
@@ -25,6 +27,10 @@ var makeQueryString = function(params) {
   }
   return qs.join("&");
 };
+
+var makeURL = function(data) {
+  return endpoint + "?" + makeQueryString(data);
+}
 
 var parseInputs = function(inputs) {
   var params = {};
@@ -41,8 +47,8 @@ var parseInputs = function(inputs) {
 document.querySelector("#submit").addEventListener("click", function(e) {
   e.preventDefault();
   var params = parseInputs(inputs);
-  var qs = makeQueryString(params);
-  var url = endpoint + "?" + qs;
+  params.run = "answer";
+  var url = makeURL(params);
   e.target.classList.add("working");
   jsonp(url, function(data) {
     e.target.classList.remove("working");
@@ -64,3 +70,12 @@ var reset = function() {
 
 inputs.forEach(function(el) { el.addEventListener("focus", reset) });
 
+var getBooks = makeURL({ run: "titles" });
+jsonp(getBooks, function(data) {
+  data.forEach(function(title) {
+    var option = document.createElement("option");
+    option.value = title;
+    option.innerHTML = title;
+    bookSelect.appendChild(option);
+  })
+})
