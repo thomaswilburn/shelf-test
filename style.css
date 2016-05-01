@@ -1,53 +1,110 @@
-body {
+* { box-sizing: border-box; }
+
+html, body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+.app {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
   height: 100vh;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  font-family: sans;
 }
 
-h1 {
+.app .stage {
+  display: none;
+  padding: 80px;
+  border: 1px solid #eee;
+  box-shadow: 8px 8px 12px rgba(0, 0, 0, .2);
   text-align: center;
 }
 
-.test-form .row {
-  padding: 8px;
-  display: flex;
+.app .stage label {
+  font-size: 24px;
+  font-weight: bold;
+  display: block;
+  margin: 12px; 
 }
 
-.test-form .row input,
-.test-form .row label {
-  flex: 50%;
-  padding: 4px;
-}
-
-.test-form .row label {
-  text-align: right;
-}
-
-#submit {
+.app .stage input, select {
   display: block;
   width: 100%;
-  background: white;
-  border: 1px solid #888;
   padding: 8px;
   font-size: 18px;
 }
 
-#submit.working::after {
-  content: "↝";
-  margin-left: 8px;
+.app .stage option {
+  font-size: 14px;
 }
 
-.result {
+.double-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+.double-input input,
+.double-input select {
+  flex: 0 0 45%;
+}
+
+.app .stage button {
+  display: block;
+  width: 75%;
+  padding: 8px;
+  margin: 8px auto;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.app .stage .warning {
   display: none;
-  padding: 20px;
+  color: #991010;
+  padding: 8px;
 }
 
-.result.answered {
+.app .stage .warning.show {
   display: block;
 }
+
+.app .stage.book-entry.working {
+  opacity: .5;
+}
+
+.app .stage.book-entry.working .check-shelf {
+  display: none;
+}
+
+.app .stage.book-entry .spinner {
+  display: none;
+  font-size: 40px;
+}
+
+.app .stage.book-entry.working .spinner {
+  display: block;
+}
+
+.app .stage .guesses i {
+  margin: 8px;
+  font-size: 40px;
+  opacity: .3;
+}
+
+.app .stage .guesses .success {
+  color: #21b7b7;
+}
+
+.app .stage .guesses .failure {
+  color: #991010;
+}
+
+.app .stage .guesses .current {
+  opacity: 1;
+}
+
+.app[data-stage="sign-in"] .sign-in.stage { display: block; }
+.app[data-stage="book-entry"] .book-entry.stage { display: block; }
+.app[data-stage="results"] .results.stage { display: block; }

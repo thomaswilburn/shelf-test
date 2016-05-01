@@ -3,32 +3,47 @@
   <head>
     <meta charset="utf-8">
     <title>Shelf Test</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     
-    <main class="app">
-      <h1>Shelf Test</h1>
-      <form class="test-form">
-        <div class="row">
-          <label>Name:</label>
-          <input id="name">
+    <main class="app" data-stage="sign-in">
+      <section class="sign-in stage">
+        <label>Enter your name:</label>
+        <input class="name" id="name">
+        <div class="warning missing-name">
+          You must enter a name.
         </div>
-        <div class="row">
+        <button class="goto-entry">Next</button>
+      </section>
+
+      <section class="book-entry stage">
+        <label>Choose a book and enter a shelf:</label>
+        <div class="double-input">
           <select id="book"></select>
+          <input id="shelf" placeholder="Shelf Number?">
         </div>
-        <div class="row">
-          <label>Shelf:</label>
-          <input id="shelf">
+        <div class="warning entry-choices"></div>
+        <button class="check-shelf">Check answer</button>
+        <div class="spinner">
+          <i class="fa fa-spinner fa-spin"></i>
+          Checking...
         </div>
-        <button id="submit">GO</button>
-      </form>
-      <div class="result">
-        <div class="description"></div>
-        <div class="attempts">
-          <label>Remaining attempts:</label> <span class="remaining"></span>
+      </section>
+
+      <section class="results stage">
+        <label>Your answer:</label>
+        <div class="answer">
+          <span class="book"></span>:
+          Shelf #<span class="shelf"></span>
         </div>
-      </div>
+        <div class="correctness"></div>
+        <label>Your guesses:</label>
+        <div class="guesses"></div>
+        <button class="try-again">Try again</button>
+      </section>
     </main>
     
     <script src="script.js"></script>
