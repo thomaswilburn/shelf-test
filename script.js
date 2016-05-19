@@ -4,6 +4,7 @@ var endpoint = "https://script.google.com/macros/s/AKfycbxr31iqyrAUOrThLD594V6_A
 var $ = function(s) { return Array.prototype.slice.call(document.querySelectorAll(s)) };
 
 var app = document.querySelector(".app");
+var statusBar = document.querySelector(".top-bar");
 var inputs = ["name", "book", "shelf"].reduce(function(inputs, id) {
   inputs[id] = document.querySelector("#" + id);
   return inputs;
@@ -38,6 +39,9 @@ var checkName = function() {
   } else {
     inputs.shelf.value = "";
     app.setAttribute("data-stage", "book-entry");
+    statusBar.classList.remove("hide");
+    statusBar.querySelector(".name").innerHTML = nameValue;
+    statusBar.querySelector(".score").innerHTML = 0;
   }
 };
 document.querySelector(".goto-entry").addEventListener("click", checkName);
@@ -106,6 +110,7 @@ var renderResults = function(results) {
   }
   icons = icons.map(function(c) { return "<i class=\"" + c + "\"></i>" }).join("");
   stage.querySelector(".guesses").innerHTML = icons;
+  statusBar.querySelector(".score").innerHTML = results.score;
 }
 
 //clear the form and go back to the shelf
@@ -124,5 +129,5 @@ jsonp(getBooks, function(data) {
     option.value = title;
     option.innerHTML = title;
     inputs.book.appendChild(option);
-  })
-})
+  });
+});

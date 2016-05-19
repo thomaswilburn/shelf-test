@@ -7,6 +7,17 @@ html, body {
   font-family: "Montserrat", sans-serif;
 }
 
+.top-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 8px;
+}
+
+.top-bar.hide {
+  display: none;
+}
+
 .app {
   display: flex;
   justify-content: center;
