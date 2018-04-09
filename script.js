@@ -124,7 +124,7 @@ document.querySelector(".try-again").addEventListener("click", shelfReturn);
 //load the titles
 var getBooks = makeURL({ run: "titles" });
 jsonp(getBooks, function(data) {
-  data.sort().forEach(function(title) {
+  data.forEach(function(title) {
     var option = document.createElement("option");
     option.value = title;
     option.innerHTML = title;
