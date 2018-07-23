@@ -5,7 +5,7 @@ var $ = function(s) { return Array.prototype.slice.call(document.querySelectorAl
 
 var app = document.querySelector(".app");
 var statusBar = document.querySelector(".top-bar");
-var inputs = ["name", "book", "shelf"].reduce(function(inputs, id) {
+var inputs = ["name", "book", "shelf", "teacher"].reduce(function(inputs, id) {
   inputs[id] = document.querySelector("#" + id);
   return inputs;
 }, {});
@@ -33,14 +33,15 @@ var makeURL = function(params) {
 
 //check the first stage
 var checkName = function() {
-  var nameValue = inputs.name.value;
-  if (!nameValue) {
+  if (!inputs.name.value) {
     document.querySelector(".missing-name.warning").classList.add("show");
+  } else if (!inputs.teacher.value) {
+    document.querySelector(".missing-teacher.warning").classList.add("show");
   } else {
     inputs.shelf.value = "";
     app.setAttribute("data-stage", "book-entry");
     statusBar.classList.remove("hide");
-    statusBar.querySelector(".name").innerHTML = nameValue;
+    statusBar.querySelector(".name").innerHTML = inputs.name.value;
     statusBar.querySelector(".score").innerHTML = 0;
   }
 };
@@ -121,13 +122,23 @@ var shelfReturn = function() {
 };
 document.querySelector(".try-again").addEventListener("click", shelfReturn);
 
-//load the titles
-var getBooks = makeURL({ run: "titles" });
-jsonp(getBooks, function(data) {
-  data.forEach(function(title) {
+
+var initURL = makeURL({ run: "init" });
+jsonp(initURL, function(data) {
+  data.books.forEach(function(title) {
     var option = document.createElement("option");
     option.value = title;
     option.innerHTML = title;
     inputs.book.appendChild(option);
+  });
+
+  $(".warning").forEach(el => el.classList.remove("show"));
+
+  inputs.teacher.innerHTML = "";
+  data.teachers.sort().forEach(function(teacher) {
+    var option = document.createElement("option");
+    option.value = teacher;
+    option.innerHTML = teacher;
+    inputs.teacher.appendChild(option);
   });
 });
